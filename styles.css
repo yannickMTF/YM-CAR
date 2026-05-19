@@ -1,0 +1,925 @@
+/* ==========================================================================
+   1. RESET, CONFIGURACIÓN GLOBAL Y VARIABLES
+   ========================================================================== */
+:root {
+  --color-primario: #2a9d8f;
+  --color-primario-hover: #217a6f;
+  --color-acento: #48cae4;
+  --color-texto-principal: #2b2d42;
+  --color-texto-secundario: #6c757d;
+  --color-fondo: #f8fbfb;
+  --color-fondo-tarjetas: #ffffff;
+  --color-borde: #e5e9ea;
+  --color-gris-claro: #f1f4f5;
+
+  --fuente-principal: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  --transicion-suave: all 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--fuente-principal);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Previene solapamiento del header sticky */
+}
+
+body {
+  background-color: var(--color-fondo);
+  color: var(--color-texto-principal);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   2. COMPONENTES DE MAQUETACIÓN REUTILIZABLES (Layout Patterns)
+   ========================================================================== */
+.contenedor-bloque,
+.contenedor-bloque-angosto {
+  padding: 60px 20px;
+  margin: 0 auto;
+}
+
+.contenedor-bloque {
+  max-width: 1200px;
+}
+.contenedor-bloque-angosto {
+  max-width: 800px;
+}
+
+.seccion-gris {
+  background-color: var(--color-gris-claro);
+}
+
+.titulo-seccion {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.titulo-seccion::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: var(--color-primario);
+  margin: 10px auto 0 auto;
+  border-radius: 2px;
+}
+
+/* Contenedor flexible multiuso para servicios y beneficios */
+.contenedor-grid-3 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* Unificación de estilos para tarjetas de servicios y beneficios */
+.beneficio-tarjeta,
+.servicio-card {
+  flex: 1 1 calc(33.333% - 20px);
+  min-width: 260px;
+  background-color: var(--color-fondo-tarjetas);
+  padding: 30px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--color-borde);
+}
+
+.beneficio-icono,
+.servicio-icono {
+  display: block;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.beneficio-icono img,
+.servicio-icono img {
+  width: 55px !important;
+  height: 55px !important;
+  object-fit: contain !important;
+  mix-blend-mode: multiply;
+  display: inline-block;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.beneficio-tarjeta h3,
+.servicio-card h3 {
+  margin-bottom: 12px;
+  font-size: 1.25rem;
+}
+
+.beneficio-tarjeta p,
+.servicio-card p {
+  color: var(--color-texto-secundario);
+  font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   3. HEADER Y NAVEGACIÓN SEMÁNTICA
+   ========================================================================== */
+.header-principal {
+  background-color: var(--color-fondo-tarjetas);
+  border-bottom: 1px solid var(--color-borde);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+.header-contenedor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px 20px;
+}
+
+.logo-contenedor {
+  display: flex;
+  align-items: center;
+  height: 65px;
+}
+
+.enlace-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  gap: 8px;
+  height: 100%;
+  transition: transform 0.2s ease;
+}
+
+.logo-img {
+  height: 90%;
+  width: auto;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.logo-texto {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1;
+}
+
+.texto-principal {
+  font-family: "Arial Black", sans-serif;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #0d1f2d;
+  transition: color 0.2s ease;
+}
+
+.texto-secundario {
+  font-family: "Arial", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  color: var(--color-primario);
+}
+
+.enlace-logo:hover {
+  transform: scale(1.02);
+}
+.enlace-logo:hover .texto-principal {
+  color: var(--color-primario);
+}
+.enlace-logo:hover .logo-img {
+  filter: drop-shadow(0px 2px 8px rgba(42, 157, 143, 0.45));
+}
+
+.navegacion {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.navegacion a {
+  text-decoration: none;
+  color: var(--color-texto-principal);
+  font-weight: 500;
+  transition: var(--transicion-suave);
+}
+
+.navegacion a:hover {
+  color: var(--color-primario);
+}
+
+/* ==========================================================================
+   4. COMPONENTE HERO
+   ========================================================================== */
+.hero-section {
+  background-image: url("public/autos.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 65vh;
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-capa {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 20px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  background-color: rgba(0, 0, 0, 0.45);
+}
+
+.hero-contenido h1 {
+  color: #ffffff;
+  font-size: 3rem;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.hero-contenido p {
+  color: #f1f4f5;
+  font-size: 1.25rem;
+  margin-bottom: 30px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================================================
+   5. SECCIÓN VEHÍCULOS (Grid de Catálogo)
+   ========================================================================== */
+.contenedor-grid-vehiculos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.vehiculo-card {
+  background-color: var(--color-fondo-tarjetas);
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+}
+
+.vehiculo-img-contenedor {
+  background-color: var(--color-gris-claro);
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+}
+
+.vehiculo-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.vehiculo-info {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.vehiculo-categoria {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--color-texto-secundario);
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.vehiculo-info h3 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+.vehiculo-info p {
+  color: var(--color-texto-secundario);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+
+.vehiculo-precio-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--color-borde);
+  padding-top: 15px;
+}
+
+.vehiculo-precio-fila .precio {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--color-texto-principal);
+}
+
+.vehiculo-precio-fila .precio span {
+  font-size: 0.85rem;
+  color: var(--color-texto-secundario);
+}
+
+/* ==========================================================================
+   6. FORMULARIO SEMÁNTICO DE RESERVA
+   ========================================================================== */
+.contenedor-formulario-bloque {
+  max-width: 750px;
+  margin: 0 auto;
+  background-color: var(--color-fondo-tarjetas);
+  padding: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--color-borde);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.subtitulo-formulario {
+  text-align: center;
+  color: var(--color-texto-secundario);
+  margin-bottom: 30px;
+  font-size: 0.95rem;
+}
+
+.formulario-grupo {
+  border: 1px solid var(--color-borde);
+  border-radius: 6px;
+  padding: 20px;
+  margin-bottom: 25px;
+  background-color: var(--color-fondo);
+}
+
+.formulario-grupo legend {
+  font-weight: bold;
+  padding: 0 10px;
+  color: var(--color-primario);
+  font-size: 1.05rem;
+}
+
+.formulario-fila {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.campo-ancho {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.formulario-grupo label {
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Unificación de selectores de entrada de datos para evitar repeticiones */
+.formulario-grupo input[type="text"],
+.formulario-grupo input[type="email"],
+.formulario-grupo input[type="tel"],
+.formulario-grupo input[type="date"],
+.formulario-grupo input[type="time"],
+.formulario-grupo select,
+.formulario-grupo textarea {
+  padding: 10px 12px;
+  border: 1px solid var(--color-borde);
+  border-radius: 4px;
+  background-color: var(--color-fondo-tarjetas);
+  color: var(--color-texto-principal);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.formulario-grupo input:focus,
+.formulario-grupo select:focus,
+.formulario-grupo textarea:focus {
+  border-color: var(--color-primario);
+}
+
+.formulario-fila-checks {
+  margin-bottom: 15px;
+}
+.check-label-titulo {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.opciones-checkboxes,
+.opciones-radios {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 5px;
+}
+
+.control-check,
+.control-radio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: normal !important;
+  cursor: pointer;
+}
+
+.formulario-grupo textarea {
+  resize: vertical;
+}
+
+.formulario-botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+/* ==========================================================================
+   7. COMPONENTE FAQ & NOSOTROS
+   ========================================================================== */
+.faq-item {
+  background-color: var(--color-fondo-tarjetas);
+  border: 1px solid var(--color-borde);
+  margin-bottom: 15px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.faq-pregunta {
+  padding: 18px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.faq-pregunta::after {
+  content: "❯";
+  font-size: 0.8rem;
+  transition: transform 0.2s;
+  color: var(--color-primario);
+  flex-shrink: 0;
+}
+
+.faq-item[open] .faq-pregunta::after {
+  transform: rotate(90deg);
+}
+.faq-item[open] .faq-pregunta {
+  background-color: var(--color-gris-claro);
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.faq-respuesta {
+  padding: 18px 20px;
+  color: var(--color-texto-secundario);
+}
+
+.sobre-nosotros-contenedor {
+  text-align: center;
+}
+.sobre-nosotros-contenedor h3 {
+  margin-bottom: 15px;
+  color: var(--color-primario);
+}
+.sobre-nosotros-contenedor p {
+  margin-bottom: 30px;
+}
+
+.valores-grid {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  background-color: var(--color-fondo-tarjetas);
+  border: 1px solid var(--color-borde);
+  padding: 20px;
+  border-radius: 8px;
+  text-align: left;
+}
+
+/* ==========================================================================
+   8. FOOTER PRINCIPAL Y REDES SOCIALES
+   ========================================================================== */
+.footer-principal {
+  background-color: var(--color-texto-principal);
+  color: #ffffff;
+  padding-top: 50px;
+  margin-top: 60px;
+}
+
+.footer-contenedor {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 40px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.footer-columna {
+  flex: 1 1 calc(25% - 30px);
+  min-width: 220px;
+}
+
+.footer-columna h4 {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  color: var(--color-acento);
+}
+
+.footer-columna p {
+  font-size: 0.9rem;
+  color: #ccd2d6;
+  margin-bottom: 10px;
+}
+
+.wrapper {
+  display: inline-flex;
+  list-style: none;
+  width: 100%;
+  padding-top: 15px;
+  justify-content: flex-start;
+}
+
+.wrapper .icon {
+  position: relative;
+  background: #fff;
+  border-radius: 50%;
+  margin-right: 15px;
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  color: #2b2d42;
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .tooltip {
+  position: absolute;
+  top: 0;
+  font-size: 12px;
+  background: #fff;
+  color: #fff;
+  padding: 5px 8px;
+  border-radius: 5px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .tooltip::before {
+  position: absolute;
+  content: "";
+  height: 6px;
+  width: 6px;
+  background: #fff;
+  bottom: -3px;
+  left: 50%;
+  transform: translate(-50%) rotate(45deg);
+}
+
+.wrapper .icon:hover .tooltip {
+  top: -40px;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.wrapper .facebook:hover,
+.wrapper .facebook:hover .tooltip,
+.wrapper .facebook:hover .tooltip::before {
+  background: #1877f2;
+  color: #fff;
+}
+.wrapper .twitter:hover,
+.wrapper .twitter:hover .tooltip,
+.wrapper .twitter:hover .tooltip::before {
+  background: #1da1f2;
+  color: #fff;
+}
+.wrapper .instagram:hover,
+.wrapper .instagram:hover .tooltip,
+.wrapper .instagram:hover .tooltip::before {
+  background: #e4405f;
+  color: #fff;
+}
+
+.footer-derechos {
+  text-align: center;
+  padding: 20px;
+  border-top: 1px solid #3d405b;
+  font-size: 0.85rem;
+  color: #a4abb0;
+}
+
+/* ==========================================================================
+   9. LOS DOS ESTILOS DE BOTONES EXCLUSIVOS
+   ========================================================================== */
+
+/* --- ESTILO DE BOTÓN 1: ESTÁNDAR NEUMÓRFICO (Uiverse Button2) --- */
+.button2 {
+  display: inline-block;
+  transition: all 0.2s ease-in;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  color: var(--color-texto-principal);
+  font-weight: bolder;
+  padding: 0.7em 1.7em;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 0.5em;
+  background: #e8e8e8;
+  border: 1px solid #e8e8e8;
+  box-shadow:
+    2px 2px 8px #c5c5c5,
+    -2px -2px 8px #ffffff;
+  text-decoration: none;
+  text-align: center;
+}
+
+.button2:active {
+  color: #666;
+  box-shadow:
+    inset 4px 4px 12px #c5c5c5,
+    inset -4px -4px 12px #ffffff;
+}
+
+.button2:before,
+.button2:after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  display: block;
+  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
+}
+
+.button2:before {
+  left: 50%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.25);
+  top: 100%;
+  width: 140%;
+  height: 180%;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.button2:after {
+  left: 55%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.45);
+  top: 180%;
+  width: 160%;
+  height: 190%;
+  background-color: var(--color-primario);
+}
+
+.button2:hover {
+  color: #ffffff;
+  border: 1px solid var(--color-primario);
+}
+.button2:hover:before {
+  top: -35%;
+  background-color: var(--color-primario);
+  transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+.button2:hover:after {
+  top: -45%;
+  background-color: var(--color-primario);
+  transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+
+/* --- ESTILO DE BOTÓN 2: INTERACTIVO MULTI-LETRA EN HEADER (RESERVAR -> YMRENTAS) --- */
+.enlace-boton-3d {
+  text-decoration: none;
+}
+.button {
+  display: flex;
+  justify-content: center;
+}
+
+.box {
+  width: 32px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  transition: all 0.8s;
+  cursor: pointer;
+  position: relative;
+  background: var(--color-primario-hover);
+  overflow: hidden;
+}
+
+.box:before {
+  position: absolute;
+  top: 0;
+  background: #0f0f0f;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(100%);
+  transition: transform 0.4s;
+}
+
+.button:hover .box:before {
+  transform: translateY(0);
+}
+
+.box:nth-child(1)::before {
+  content: "Y";
+}
+.box:nth-child(2)::before {
+  transform: translateY(-100%);
+  content: "M";
+}
+.box:nth-child(3)::before {
+  content: "R";
+}
+.box:nth-child(4)::before {
+  transform: translateY(-100%);
+  content: "E";
+}
+.box:nth-child(5)::before {
+  content: "N";
+}
+.box:nth-child(6)::before {
+  transform: translateY(-100%);
+  content: "T";
+}
+.box:nth-child(7)::before {
+  content: "A";
+}
+.box:nth-child(8)::before {
+  transform: translateY(-100%);
+  content: "S";
+}
+
+/* ==========================================================================
+   10. MEDIA QUERIES (Responsividad Avanzada de 300px a más)
+   ========================================================================== */
+
+/* Dispositivos Medianos (Tablets y Laptops de hasta 768px) */
+@media (max-width: 768px) {
+  .header-contenedor {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px 10px;
+  }
+
+  .navegacion {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .hero-contenido h1 {
+    font-size: 2.2rem;
+  }
+  .hero-contenido p {
+    font-size: 1.1rem;
+  }
+
+  .valores-grid,
+  .formulario-fila {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .contenedor-bloque,
+  .contenedor-bloque-angosto {
+    padding: 40px 15px;
+  }
+}
+
+/* Celulares Inteligentes Estándar (Hasta 480px) */
+@media (max-width: 480px) {
+  .logo-contenedor {
+    height: 55px;
+  }
+  .texto-principal {
+    font-size: 20px;
+  }
+  .texto-secundario {
+    font-size: 9px;
+    letter-spacing: 4px;
+  }
+  .navegacion {
+    gap: 12px;
+  }
+  .navegacion a {
+    font-size: 0.95rem;
+  }
+
+  /* Reducción fluida del botón letra por letra para pantallas Mobile */
+  .box {
+    width: 28px;
+    height: 36px;
+    font-size: 13px;
+  }
+
+  .hero-section {
+    height: 50vh;
+    min-height: 320px;
+  }
+  .hero-contenido h1 {
+    font-size: 1.7rem;
+  }
+  .titulo-seccion {
+    font-size: 1.6rem;
+  }
+
+  .contenedor-formulario-bloque {
+    padding: 25px 15px;
+  }
+  .formulario-grupo {
+    padding: 15px 10px;
+  }
+
+  .formulario-botones {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .button2 {
+    width: 100%;
+  } /* Botón se expande para mejorar el área de clic táctil */
+}
+
+/* Pantallas Extra Pequeñas / Soporte Límite (Hasta 340px - Protege hasta los 300px mínimos) */
+@media (max-width: 340px) {
+  .header-contenedor {
+    padding: 10px 5px;
+  }
+  .logo-contenedor {
+    height: 48px;
+  }
+  .texto-principal {
+    font-size: 18px;
+  }
+  .navegacion {
+    gap: 8px;
+  }
+  .navegacion a {
+    font-size: 0.85rem;
+  }
+
+  /* Compresión de seguridad para asegurar que el botón 3D no genere scroll a 300px */
+  .box {
+    width: 25px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .contenedor-grid-vehiculos {
+    grid-template-columns: 1fr;
+  }
+  .vehiculo-precio-fila {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}
